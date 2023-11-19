@@ -86,20 +86,18 @@ public partial class LiveStreamViewModel : ViewModelBase, IEquatable<LiveStreamV
             int divisor = value > 1000 ? value > 1000000 ? 1000000 : 1000 : 1;
             string unitText = divisor == 1000 ? "K" : divisor == 1000000 ? "M" : "";
 
-            string initial = string.Empty;
+            string initial;
 
             if (divisor > 1)
+            {
                 initial = $"{(double)value / divisor:F1} {unitText}";
+                if (initial.EndsWith('0')) // Remove trailing zeros
+                    ViewersCountText = initial[..^2] + unitText;
+            }
             else
                 initial = $"{value} {unitText}";
             
-            // Remove trailing zeros
-            if (initial.EndsWith('0'))
-                ViewersCountText = initial[..^2] + unitText;
-            else
-                ViewersCountText = initial;
-                
-
+            ViewersCountText = initial;
         }
     }
 
@@ -115,7 +113,6 @@ public partial class LiveStreamViewModel : ViewModelBase, IEquatable<LiveStreamV
     public void CopyStreamURL()
         => CopyStreamURLToClipboardRequested?.Invoke(this, $"https://twitch.tv/{Login}");
     
-
     public void Block()
         => BlockRequested?.Invoke(this, UserId);
 
