@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -30,7 +31,7 @@ public class OAuth2Authenticator : IDisposable
     private static readonly string NORMAL_RESPONSE = ReadHTML("avares://WhoIsLive.UX/Assets/html/normal_response.html");
 
     private const string AUTHORIZATION_URL_PATTERN = @"https://id.twitch.tv/oauth2/authorize?response_type=token&client_id={0}&redirect_uri=http://localhost:{1}&scope={2}&state={3}";
-    
+
     private const string TEST_URL = "https://api.twitch.tv/helix/users";
 
     #endregion
@@ -56,7 +57,6 @@ public class OAuth2Authenticator : IDisposable
     ///   A random string used to prevent CSRF attacks on the OAuth2 flow.
     /// </summary>
     private string _state = string.Empty;
-
 
     private readonly string _clientID;
     private readonly int[] _redirectPorts;
@@ -207,32 +207,37 @@ public class OAuth2Authenticator : IDisposable
             var state = fragmentParams["state"];
             var accessToken = fragmentParams["access_token"];
 
-            if (state == null || state != _state)
-            {
-                SendResponse(response, FAILURE_RESPONSE, 400);
-                AuthenticationFailed?.Invoke(this, new ProcessErrorEventArgs("Authenticator", @"The received request's state is not the same as the one we sent, 
+            HandleResponse(response, hasErrored, accessToken, state, fragmentParams);
+        }
+    }
+
+    private void HandleResponse(HttpListenerResponse response, bool hasErrored, string? accessToken, string? state, NameValueCollection fragmentParams)
+    {
+        if (state == null || state != _state)
+        {
+            SendResponse(response, FAILURE_RESPONSE, 400);
+            AuthenticationFailed?.Invoke(this, new ProcessErrorEventArgs("Authenticator", @"The received request's state is not the same as the one we sent, 
                                                                                                     The initial request might have been tampered with."));
-                return;
-            }
+            return;
+        }
 
-            if (hasErrored || accessToken == null || state == null)
-            {
-                SendResponse(response, FAILURE_RESPONSE, 400);
+        if (hasErrored || accessToken == null)
+        {
+            SendResponse(response, FAILURE_RESPONSE, 400);
 
-                string? description = fragmentParams["error_description"];
+            string? description = fragmentParams["error_description"];
 
-                string message = description != null ? $"Twitch provided the following error: {description}"
-                                                     : "An error occured but Twitch provided no descriptions.";
+            string message = description != null ? $"Twitch provided the following error: {description}"
+                                                 : "An error occured but Twitch provided no descriptions.";
 
-                AuthenticationFailed?.Invoke(this, new ProcessErrorEventArgs("Authenticator", $"Twitch provided the following error: {description}"));
-            }
-            else
-            {
-                SendResponse(response, SUCCESS_RESPONSE);
-                AuthenticationCompleted?.Invoke(this, new OAuth2AuthenticationEventArgs(_clientID,
-                                                                                        accessToken,
-                                                                                        "Bearer"));
-            }
+            AuthenticationFailed?.Invoke(this, new ProcessErrorEventArgs("Authenticator", $"Twitch provided the following error: {description}"));
+        }
+        else
+        {
+            SendResponse(response, SUCCESS_RESPONSE);
+            AuthenticationCompleted?.Invoke(this, new OAuth2AuthenticationEventArgs(_clientID,
+                                                                                    accessToken,
+                                                                                    "Bearer"));
         }
     }
 

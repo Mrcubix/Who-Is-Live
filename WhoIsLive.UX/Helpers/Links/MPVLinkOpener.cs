@@ -88,7 +88,6 @@ namespace WhoIsLive.UX.Lib
             var command = $"{Directory}{COMMAND}";
             var args = $"-p {command} -a \"{MPV_ARGUMENTS}\" {url} {Settings.Quality} --twitch-disable-ads";
             
-
             OpenCore(STREAMLINK_COMMAND, args);
         }
 

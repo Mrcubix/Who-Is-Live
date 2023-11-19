@@ -281,7 +281,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
                 ParseNonSuccessfulResponse(response);
                 isSuccessful = false;
             }
-
         } while (!string.IsNullOrEmpty(_cursor) && isSuccessful);
 
         if (isSuccessful)
@@ -355,7 +354,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
         }
 
         _client.Dispose();
-
     }
 
     #endregion
