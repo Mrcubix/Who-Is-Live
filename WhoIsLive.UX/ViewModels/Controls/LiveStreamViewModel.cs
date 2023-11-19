@@ -6,7 +6,7 @@ namespace WhoIsLive.UX.ViewModels.Controls;
 
 #nullable enable
 
-public partial class LiveStreamViewModel : ViewModelBase
+public partial class LiveStreamViewModel : ViewModelBase, IEquatable<LiveStreamViewModel>
 {
     #region Observable Fields
 
@@ -105,6 +105,14 @@ public partial class LiveStreamViewModel : ViewModelBase
 
     public void Block()
         => BlockRequested?.Invoke(this, UserId);
+
+    public bool Equals(LiveStreamViewModel? other)
+    {
+        if (other is null)
+            return false;
+
+        return UserId == other.UserId;
+    }
 
     #endregion
 }
