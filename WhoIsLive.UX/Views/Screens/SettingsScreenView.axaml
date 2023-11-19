@@ -1,0 +1,113 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm-screens="clr-namespace:WhoIsLive.UX.ViewModels.Screens"
+             xmlns:controls="clr-namespace:WhoIsLive.UX.Controls"
+             xmlns:locals="clr-namespace:WhoIsLive.UX.Assets.Localizations"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WhoIsLive.UX.Views.Screens.SettingsScreenView"
+             x:DataType="vm-screens:SettingsScreenViewModel">
+
+  <Design.DataContext>
+    <vm-screens:SettingsScreenViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="Grid">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="Margin" Value="0, 0, 0, 8" />
+    </Style>
+    <Style Selector="Grid > TextBlock">
+      <Setter Property="Margin" Value="0, 0, 0, 10" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Margin" Value="15, 0, 0, 5" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="TextBox">
+      <Setter Property="Margin" Value="15, 0, 0, 5" />
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="Button#VIEW_BackButton">
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Margin" Value="0, -4, 0, 0" />
+      <Setter Property="Padding" Value="9, 8, 9, 9" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid RowDefinitions="Auto, Auto, Auto, Auto, *" ColumnDefinitions="*, *">
+
+    <Grid ColumnDefinitions="Auto, Auto, *" Margin="16" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+      <Button Name="VIEW_BackButton" Content="←" Command="{Binding GoBackCommand}" Grid.Column="0" />
+      <TextBlock Text="{x:Static locals:Resources.StreamsBrowserSettingsLabel}" FontSize="24" FontWeight="Bold" Margin="16, 0" Grid.Column="1" />
+    </Grid>
+
+    <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *" Grid.Row="1" Grid.Column="0" Margin="16, 0">
+      
+      <TextBlock Text="{x:Static locals:Resources.StreamsBrowserElementsPerPageLabel}" Grid.Row="0" Grid.Column="0" />
+      <ComboBox ItemsSource="{Binding ElementsPerPageChoices}" SelectedIndex="{Binding ElementsPerPageIndex}" Grid.Row="0" Grid.Column="1" />
+
+      <TextBlock Text="{x:Static locals:Resources.StreamsBrowserQualityLabel}" Grid.Row="1" Grid.Column="0" />
+      <ComboBox ItemsSource="{Binding QualityChoices}" SelectedItem="{Binding Quality}" Grid.Row="1" Grid.Column="1" />
+
+      <TextBlock Text="{x:Static locals:Resources.StreamsBrowserOpenWithLabel}" Grid.Row="2" Grid.Column="0" />
+      <ComboBox ItemsSource="{Binding OpenWithChoices}" SelectedIndex="{Binding OpenWithIndex}" Grid.Row="2" Grid.Column="1">
+        <ComboBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{Binding DisplayName}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+
+    </Grid>
+
+    <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *" Grid.Row="1" Grid.Column="1" Margin="16, 0">
+
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenVLCDirectoryPath}" Grid.Row="0" Grid.Column="0" />
+      <TextBox Text="{Binding VLCDirectory}" Grid.Row="0" Grid.Column="1" />
+
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenMPVDirectoryPath}" Grid.Row="1" Grid.Column="0" />
+      <TextBox Text="{Binding MPVDirectory}" Grid.Row="1" Grid.Column="1" />
+
+    </Grid>
+
+    <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="16" />
+
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="Auto, Auto, *" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenBlockedStreamsLabel}" FontSize="20" FontWeight="DemiBold" 
+                 Grid.Row="0" Grid.Column="0" Margin="16, 16, 0, 16" VerticalAlignment="Center" />
+
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenBlockedStreamsToolTip}" FontSize="14" FontWeight="Thin"
+                 Grid.Row="0" Grid.Column="1" Margin="4,16,0,16" VerticalAlignment="Center" />
+
+      <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+
+        <ItemsControl ItemsSource="{Binding BlockedStreams}" Margin="16, 0" HorizontalAlignment="Stretch">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <controls:BlockedStreamControl HorizontalAlignment="Stretch" Margin="8, 0, 8, 4" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+      </ScrollViewer>
+
+    </Grid>
+
+  </Grid>
+
+</UserControl>

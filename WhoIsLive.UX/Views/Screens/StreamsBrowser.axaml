@@ -1,0 +1,101 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:WhoIsLive.UX.ViewModels.Screens"
+             xmlns:screens="clr-namespace:WhoIsLive.UX.Views.Screens"
+             xmlns:controls="clr-namespace:WhoIsLive.UX.Controls"
+             xmlns:vm-controls="clr-namespace:WhoIsLive.UX.ViewModels.Controls"
+             xmlns:locals="clr-namespace:WhoIsLive.UX.Assets.Localizations"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WhoIsLive.UX.Views.Screens.StreamsBrowser"
+             x:DataType="vm:StreamsBrowserViewModel">
+
+  <Design.DataContext>
+    <vm:StreamsBrowserViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="Grid">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+    <Style Selector="Grid#VIEW_Header">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+    <Style Selector="Grid#VIEW_Header > TextBlock">
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style Selector="Grid#VIEW_Header > Button">
+      <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+    <Style Selector="ItemsControl#StreamsList">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+    <Style Selector="Grid#PageNavigationBar">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Bottom" />
+    </Style>
+    <Style Selector="Grid#PageNavigationBar > Button">
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="FontSize" Value="16" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Width" Value="32" />
+      <Setter Property="Height" Value="32" />
+      <Setter Property="Padding" Value="8, 4, 8, 6" />
+    </Style>
+    <Style Selector="Grid#VIEW_Header > Button">
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+    <Style Selector="Button#VIEW_SettingsButton">
+      <Setter Property="Margin" Value="8, 0, 0, 0" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="Width" Value="30" />
+      <Setter Property="Height" Value="30" />
+    </Style>
+    <Style Selector="Button#VIEW_SettingsButton:pointerover">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+  </UserControl.Styles>
+
+  <ContentControl Content="{Binding NextViewModel}">
+    <ContentControl.DataTemplates>
+      <DataTemplate DataType="vm:StreamsBrowserViewModel">
+        <Grid RowDefinitions="Auto, *, Auto" MinWidth="350">
+          <Grid Name="VIEW_Header" ColumnDefinitions="Auto, *, Auto, Auto" Grid.Row="0" Margin="16">
+            <TextBlock Text="{x:Static locals:Resources.StreamsBrowserTitle}" FontSize="24" FontWeight="Bold" Grid.Column="0"/>
+            <Button Content="{x:Static locals:Resources.StreamsBrowserRefreshButtonLabel}" Command="{Binding RefreshCommand}" Grid.Column="2" />
+            <Button Name="VIEW_SettingsButton" Command="{Binding OpenSettings}" Grid.Column="3">
+              <Image Source="/Assets/Icons/gear.png" Width="24" Height="24" Margin="0,1,0,0" />
+            </Button>
+          </Grid>
+
+          <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" IsVisible="{Binding HasStreams}">
+            <ItemsControl Name="StreamsList" ItemsSource="{Binding CurrentPageLiveStreams}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="vm-controls:LiveStreamViewModel">
+                  <controls:LiveStreamControl />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+
+          <TextBlock Text="{x:Static locals:Resources.StreamsBrowserNoStreamsLabel}" FontSize="16" FontWeight="Bold" 
+                     IsVisible="{Binding !HasStreams}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+          <Grid Name="PageNavigationBar" ColumnDefinitions="Auto, *, Auto" Grid.Row="3" Margin="16">
+            <Button Name="PreviousPageButton" Content="&lt;" Command="{Binding GoBackCommand}" Grid.Column="0" />
+            <Button Name="NextPageButton" Content="&gt;" Command="{Binding GoNextCommand}" Grid.Column="2" />
+          </Grid>
+        </Grid>
+      </DataTemplate>
+      <DataTemplate DataType="vm:SettingsScreenViewModel">
+        <screens:SettingsScreenView />
+      </DataTemplate>
+    </ContentControl.DataTemplates>
+  </ContentControl>
+
+</UserControl>

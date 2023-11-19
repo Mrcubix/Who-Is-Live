@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:installLocation="auto">
+	<uses-permission android:name="android.permission.INTERNET" />
+
+	<!-- Check if the device has a web browser installed. -->
+	<queries>
+		<intent>
+			<action android:name="android.intent.action.VIEW" />
+			<category android:name="android.intent.category.BROWSABLE" />
+			<data android:scheme="https" />
+		</intent>
+	</queries>
+
+	<application android:label="WhoIsLive.UX" android:icon="@drawable/Icon" />
+</manifest>

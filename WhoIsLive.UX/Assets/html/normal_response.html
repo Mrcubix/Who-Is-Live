@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <script>
+            document.addEventListener("DOMContentLoaded", async function(event) {
+
+                let status = document.getElementById('status');
+                let location = document.location;
+
+                let href = document.location.href;
+
+                // check if the query string is present
+                if (!href.includes('?'))
+                {
+                    if (!href.includes('#'))
+                    {
+                        status.innerHTML = 'Request is invalid, please try again;';
+                        return;
+                    }
+
+                    var newURL = href.replace('#', '?');
+
+                    let request;
+
+                    try
+                    {
+                        request = await fetch(newURL);
+                    }
+                    catch (e)
+                    {
+                        status.innerHTML = 'fetch failed, please try again;';
+                        return;
+                    }
+                    
+                    if (request.status == 200)
+                    {
+                        status.innerHTML = 'Authentification Received, you can come back to the app to check the result;';
+                    }
+                    else
+                    {
+                        status.innerHTML = 'Authentification Failed, please try again;';
+                    }
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <h1>WhoIsLive.UX</h1>
+        <p id="status">Please wait while we are processing your request...</p>
+    </body>
+</html>

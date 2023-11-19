@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm-screens="clr-namespace:WhoIsLive.UX.ViewModels.Screens"
+             xmlns:locals="clr-namespace:WhoIsLive.UX.Assets.Localizations"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WhoIsLive.UX.Views.Screens.AuthenticationScreen"
+             x:DataType="vm-screens:AuthenticationScreenViewModel">
+
+  <Design.DataContext>
+    <vm-screens:AuthenticationScreenViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="Grid">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="TextBlock">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid RowDefinitions="Auto, Auto, *, Auto, Auto" Margin="32">
+    <TextBlock Text="{x:Static locals:Resources.AuthenticationScreenHeaderLabel}" FontSize="24" FontWeight="Bold" Grid.Row="0" />
+    <TextBlock Text="{x:Static locals:Resources.AuthenticationScreenSubHeaderLabel}" FontSize="14" Grid.Row="1" />
+    <Button Content="{x:Static locals:Resources.AuthenticationScreenLoginButtonLabel}" Command="{Binding AuthenticateCommand}" Background="#9146FF" Grid.Row="3" Margin="16" />
+    <Button Content="{x:Static locals:Resources.AuthenticationScreenNextButtonLabel}" Command="{Binding GoNextCommand}" Grid.Row="4" />
+  </Grid>
+
+</UserControl>

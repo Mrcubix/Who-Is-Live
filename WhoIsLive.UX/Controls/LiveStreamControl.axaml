@@ -1,0 +1,51 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm-controls="clr-namespace:WhoIsLive.UX.ViewModels.Controls"
+             xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="WhoIsLive.UX.Controls.LiveStreamControl"
+             x:DataType="vm-controls:LiveStreamViewModel">
+
+  <Design.DataContext>
+    <vm-controls:LiveStreamViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="Grid">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="Grid > TextBlock">
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="Margin" Value="10, 0, 0, 0" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Background" Value="#1F1F23" />
+    </Style>
+  </UserControl.Styles>
+
+  <Button Command="{Binding Open}" HorizontalAlignment="Stretch">
+    <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *, Auto" Margin="10, 5">
+      <labs:AsyncImage Source="{Binding ProfilePictureUrl}" MinWidth="70" MaxHeight="70" Grid.RowSpan="2" Grid.Column="0" />
+      <TextBlock Text="{Binding Username}" FontSize="16.8" Grid.Row="0" Grid.Column="1" />
+      <TextBlock Text="{Binding Game}" FontSize="15.6" Grid.Row="1" Grid.Column="1" />
+      <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
+        <Ellipse Fill="Red" Width="8" Height="8" Margin="0, 6, 0, 0" VerticalAlignment="Top" />
+        <TextBlock Text="{Binding ViewersCountText}" FontSize="15.6" Margin="5, 0, 0, 0" VerticalAlignment="Top" />
+      </StackPanel>
+    </Grid>
+
+    <Button.ContextMenu>
+      <ContextMenu>
+        <MenuItem Header="Copy Stream URL" Command="{Binding CopyStreamURL}" />
+        <MenuItem Header="-" />
+        <MenuItem Header="Block Stream" Command="{Binding Block}" />
+      </ContextMenu>
+    </Button.ContextMenu>
+  </Button>
+
+</UserControl>
