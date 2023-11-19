@@ -6,15 +6,19 @@ The main reason this app exist is because Twitch's website is very slow, especia
 There is a way to get a smoother experience, and it is by using 3rd party apps to open streams outside of the very slow browsers.
 This app makes use of streamlink to achieve this! (https://streamlink.github.io/).
 
-# Dependencies
+## Dependencies
 
 - .NET 7 Desktop Runtime (https://dotnet.microsoft.com/download/dotnet/7.0) (Middle right of this page)
 
-# Optional Dependencies
+## Optional Dependencies
 
 - Streamlink (https://streamlink.github.io/install.html) (If you want to open streams in VLC or MPV)
 - VLC (https://www.videolan.org/vlc/) (If you want to open streams in VLC)
 - MPV (https://mpv.io/installation/) (If you want to open streams in MPV)
+
+## Notice
+
+- No packages are provided for linux & MacOS, as i don't know how to make them, the linux version works, but you have to install it manually or not.
 
 ## Features
 
