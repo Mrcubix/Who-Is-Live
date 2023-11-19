@@ -75,6 +75,8 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
                 OpenWithChoices.Add(linkOpener);
             }
+            else
+                Console.WriteLine($"{linkOpener.DisplayName} is not installed.");
         }
 
         OpenWith = OpenWithChoices.FirstOrDefault(linkOpener => linkOpener.DisplayName == settings.OpenWith) ?? OpenWithChoices[0];
