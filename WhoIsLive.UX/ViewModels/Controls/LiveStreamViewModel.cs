@@ -86,7 +86,7 @@ public partial class LiveStreamViewModel : ViewModelBase, IEquatable<LiveStreamV
             int divisor = value > 1000 ? value > 1000000 ? 1000000 : 1000 : 1;
             string unitText = divisor == 1000 ? "K" : divisor == 1000000 ? "M" : "";
 
-            ViewersCountText = $"{value / divisor}{unitText}";
+            ViewersCountText = $"{(double)value / divisor:F1} {unitText}";
         }
     }
 
