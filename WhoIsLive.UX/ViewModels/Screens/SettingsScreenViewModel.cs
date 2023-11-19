@@ -26,7 +26,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
     #region Observable Fields
 
     [ObservableProperty]
-    private int _openWithIndex;
+    private ILinkOpener _openWith = null!;
 
     [ObservableProperty]
     private string _quality;
@@ -76,6 +76,8 @@ public partial class SettingsScreenViewModel : NavigableViewModel
                 OpenWithChoices.Add(linkOpener);
             }
         }
+
+        OpenWith = OpenWithChoices.FirstOrDefault(linkOpener => linkOpener.DisplayName == settings.OpenWith) ?? OpenWithChoices[0];
 
         // Directories
 
@@ -128,8 +130,6 @@ public partial class SettingsScreenViewModel : NavigableViewModel
     public string[] QualityChoices { get; set; } = { "best", "720p60", "720p", "480p", "360p", "worst" };
 
     public int[] ElementsPerPageChoices { get; set; } = { 10, 25, 50, 100 };
-
-    public ILinkOpener OpenWith => OpenWithChoices[OpenWithIndex];
 
     public int ElementsPerPage => ElementsPerPageChoices[ElementsPerPageIndex];
 
@@ -187,8 +187,8 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(OpenWithIndex))
-            _settings.OpenWithIndex = OpenWithIndex;
+        if (e.PropertyName == nameof(OpenWith))
+            _settings.OpenWith = OpenWith.DisplayName;
         else if (e.PropertyName == nameof(Quality))
             _settings.Quality = Quality;
         else if (e.PropertyName == nameof(ElementsPerPageIndex))
@@ -197,6 +197,8 @@ public partial class SettingsScreenViewModel : NavigableViewModel
             _settings.VLCDirectory = VLCDirectory;
         else if (e.PropertyName == nameof(MPVDirectory))
             _settings.MPVDirectory = MPVDirectory;
+
+        _settings.Save();
     }
 
     private void OnBlockedUsersChanged(object? sender, NotifyCollectionChangedEventArgs e)

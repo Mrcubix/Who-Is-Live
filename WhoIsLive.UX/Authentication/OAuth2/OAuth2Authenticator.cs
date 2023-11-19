@@ -20,7 +20,7 @@ using static WhoIsLive.UX.Extensions.AssetLoaderExtensions;
 /// <summary>
 ///   OAuth authenticator for 
 /// </summary>
-public class OAuth2Authenticator
+public class OAuth2Authenticator : IDisposable
 {
     #region Constants
     private static readonly string FAILURE_RESPONSE = ReadHTML("avares://WhoIsLive.UX/Assets/html/failure_response.html");
@@ -245,6 +245,16 @@ public class OAuth2Authenticator
         response.ContentType = "text/html";
 
         response.Close(buffer, false);
+    }
+
+    #endregion
+
+    #region IDisposable
+
+    public void Dispose()
+    {
+        _listener.Close();
+        _client.Dispose();
     }
 
     #endregion

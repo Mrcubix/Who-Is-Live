@@ -14,7 +14,7 @@ public partial class Settings : ObservableObject
     #region Observable Fields
 
     [ObservableProperty]
-    private int _openWithIndex = 0;
+    private string _openWith = string.Empty;
 
     [ObservableProperty]
     private int _elementsPerPageIndex = 0;
@@ -43,7 +43,6 @@ public partial class Settings : ObservableObject
     public Settings(string path)
     {
         Path = path;
-        PropertyChanged += (_,_) => Save(path);
     }
 
     #endregion

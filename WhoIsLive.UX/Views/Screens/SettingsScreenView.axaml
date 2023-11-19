@@ -59,7 +59,7 @@
       <ComboBox ItemsSource="{Binding QualityChoices}" SelectedItem="{Binding Quality}" Grid.Row="1" Grid.Column="1" />
 
       <TextBlock Text="{x:Static locals:Resources.StreamsBrowserOpenWithLabel}" Grid.Row="2" Grid.Column="0" />
-      <ComboBox ItemsSource="{Binding OpenWithChoices}" SelectedIndex="{Binding OpenWithIndex}" Grid.Row="2" Grid.Column="1">
+      <ComboBox ItemsSource="{Binding OpenWithChoices}" SelectedItem="{Binding OpenWith}" Grid.Row="2" Grid.Column="1">
         <ComboBox.ItemTemplate>
           <DataTemplate>
             <TextBlock Text="{Binding DisplayName}" />

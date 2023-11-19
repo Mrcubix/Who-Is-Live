@@ -56,10 +56,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     private bool _canGoNext;
 
-    private int _openWithIndex;
-
-    private string _quality;
-
     private int _elementsPerPage;
 
     private int _previousEndIndex;
@@ -110,14 +106,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
         // Elements per page
 
         _elementsPerPage = SettingsScreenViewModel.ElementsPerPageChoices[settings.ElementsPerPageIndex];
-
-        // Quality
-
-        _quality = settings.Quality;
-
-        // Link openers
-
-        _openWithIndex = settings.OpenWithIndex;
 
         // Blocked streams
 
@@ -406,11 +394,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     private void OnSettingsChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(SettingsScreenViewModel.OpenWithIndex))
-            _openWithIndex = SettingsScreenViewModel.OpenWithIndex;
-        else if (e.PropertyName == nameof(SettingsScreenViewModel.Quality))
-            _quality = SettingsScreenViewModel.Quality;
-        else if (e.PropertyName == nameof(SettingsScreenViewModel.ElementsPerPageIndex))
+        if (e.PropertyName == nameof(SettingsScreenViewModel.ElementsPerPageIndex))
         {
             _elementsPerPage = SettingsScreenViewModel.ElementsPerPage;
             Dispatcher.UIThread.Invoke(StartOver);
