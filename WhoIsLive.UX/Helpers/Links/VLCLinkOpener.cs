@@ -77,6 +77,8 @@ namespace WhoIsLive.UX.Lib
 
             if (!process.HasExited)
                 process.Kill();
+
+            process.WaitForExit();
             
             if (OperatingSystem.IsWindows())
                 return process.ExitCode != 9009 && process.ExitCode != 1;
