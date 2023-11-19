@@ -64,6 +64,6 @@ This app makes use of streamlink to achieve this! (https://streamlink.github.io/
   - English
   - French
 
-## Pagination for performance 
+### Pagination for performance 
 
 (I haven't followed enough people to test it properly, but it should work)
