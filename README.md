@@ -19,6 +19,7 @@ This app makes use of streamlink to achieve this! (https://streamlink.github.io/
 ## Notice
 
 - No packages are provided for linux & MacOS, as i don't know how to make them, the linux version works, but you have to install it manually or not.
+- Don't forgot to add execute permissions to the file if you want to run it.
 
 ## Features
 
