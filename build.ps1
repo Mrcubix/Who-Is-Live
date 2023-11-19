@@ -21,17 +21,17 @@ dotnet publish ./WhoIsLive.UX.Desktop/ -c Release -r osx-arm64 -o build/osx-arm6
 
 # Windows
 
-Compress-Archive -Path build/win-x64/* -DestinationPath build/WhoIsLive-win-x64.zip
-Compress-Archive -Path build/win-x86/* -DestinationPath build/WhoIsLive-win-x86.zip
-Compress-Archive -Path build/win-arm64/* -DestinationPath build/WhoIsLive-win-arm64.zip
+Compress-Archive -Path build/win-x64/* -DestinationPath build/WhoIsLive-win-x64.zip -Update
+Compress-Archive -Path build/win-x86/* -DestinationPath build/WhoIsLive-win-x86.zip -Update
+Compress-Archive -Path build/win-arm64/* -DestinationPath build/WhoIsLive-win-arm64.zip -Update
 
 # Linux
 
-Compress-Archive -Path build/linux-x64/* -DestinationPath build/WhoIsLive-linux-x64.zip
-Compress-Archive -Path build/linux-arm/* -DestinationPath build/WhoIsLive-linux-arm.zip
-Compress-Archive -Path build/linux-arm64/* -DestinationPath build/WhoIsLive-linux-arm64.zip
+Compress-Archive -Path build/linux-x64/* -DestinationPath build/WhoIsLive-linux-x64.zip -Update
+Compress-Archive -Path build/linux-arm/* -DestinationPath build/WhoIsLive-linux-arm.zip -Update
+Compress-Archive -Path build/linux-arm64/* -DestinationPath build/WhoIsLive-linux-arm64.zip -Update
 
 # Mac
 
-Compress-Archive -Path build/osx-x64/* -DestinationPath build/WhoIsLive-osx-x64.zip
-Compress-Archive -Path build/osx-arm64/* -DestinationPath build/WhoIsLive-osx-arm64.zip
+Compress-Archive -Path build/osx-x64/* -DestinationPath build/WhoIsLive-osx-x64.zip -Update
+Compress-Archive -Path build/osx-arm64/* -DestinationPath build/WhoIsLive-osx-arm64.zip -Update
