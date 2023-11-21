@@ -47,7 +47,7 @@ public partial class ErrorScreenViewModel : NavigableViewModel
 
     #region Methods
 
-    protected override void GoBack() => RetryRequested?.Invoke(this, SourceViewModel);
+    public override void GoBack() => RetryRequested?.Invoke(this, SourceViewModel);
 
     #endregion
 }

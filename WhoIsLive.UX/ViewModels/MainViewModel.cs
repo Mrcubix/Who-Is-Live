@@ -110,7 +110,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         }
     }
 
-    protected override void GoBack()
+    public override void GoBack()
     {
         throw new NotImplementedException();
     }

@@ -8,13 +8,14 @@ namespace WhoIsLive.UX.ViewModels;
 
 public abstract partial class NavigableViewModel : ViewModelBase
 {
-    public abstract event EventHandler? BackRequested;
+    [ObservableProperty]
+    private bool _canGoBack = false;
 
-    public bool CanGoBack { get; protected set; }
+    public abstract event EventHandler? BackRequested;
 
     [ObservableProperty]
     protected NavigableViewModel? _nextViewModel = null;
 
     [RelayCommand(CanExecute = nameof(CanGoBack))]
-    protected abstract void GoBack();
+    public abstract void GoBack();
 }

@@ -131,7 +131,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
     public string[] QualityChoices { get; set; } = { "best", "720p60", "720p", "480p", "360p", "worst" };
 
-    public int[] ElementsPerPageChoices { get; set; } = { 10, 25, 50, 100 };
+    public int[] ElementsPerPageChoices { get; set; } = { 5, 10, 25, 50, 100 };
 
     public int ElementsPerPage => ElementsPerPageChoices[ElementsPerPageIndex];
 
@@ -173,7 +173,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
     #region Methods
 
-    protected override void GoBack() => BackRequested?.Invoke(this, EventArgs.Empty);
+    public override void GoBack() => BackRequested?.Invoke(this, EventArgs.Empty);
 
     public void OnUnblockRquested(object? sender, EventArgs e)
     {

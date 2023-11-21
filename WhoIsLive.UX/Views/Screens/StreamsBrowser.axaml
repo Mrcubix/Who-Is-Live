@@ -87,8 +87,8 @@
                      IsVisible="{Binding !HasStreams}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
           <Grid Name="PageNavigationBar" ColumnDefinitions="Auto, *, Auto" Grid.Row="3" Margin="16">
-            <Button Name="PreviousPageButton" Content="&lt;" Command="{Binding GoBackCommand}" Grid.Column="0" />
-            <Button Name="NextPageButton" Content="&gt;" Command="{Binding GoNextCommand}" Grid.Column="2" />
+            <Button Name="PreviousPageButton" Content="&lt;" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
+            <Button Name="NextPageButton" Content="&gt;" Command="{Binding GoNextCommand}" IsEnabled="{Binding CanGoNext}" Grid.Column="2" />
           </Grid>
         </Grid>
       </DataTemplate>

@@ -76,7 +76,7 @@ public partial class AuthenticationScreenViewModel : NavigableViewModel, IRunner
         IsAuthenticated = false;
     }
 
-    protected override void GoBack()
+    public override void GoBack()
     {
         throw new NotImplementedException();
     }

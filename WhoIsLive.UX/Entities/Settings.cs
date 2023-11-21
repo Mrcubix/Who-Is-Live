@@ -17,7 +17,7 @@ public partial class Settings : ObservableObject
     private string _openWith = string.Empty;
 
     [ObservableProperty]
-    private int _elementsPerPageIndex = 0;
+    private int _elementsPerPageIndex = 1;
 
     [ObservableProperty]
     private string _quality = "best";
