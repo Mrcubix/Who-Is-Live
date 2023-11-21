@@ -100,8 +100,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
         CurrentPageLiveStreams = new ObservableCollection<LiveStreamViewModel>();
 
-        Page = 1;
-
         // Elements per page
 
         _elementsPerPage = SettingsScreenViewModel.ElementsPerPageChoices[settings.ElementsPerPageIndex];
@@ -195,7 +193,12 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     private async Task<List<User>?> GetUsers(List<LiveStream> streams)
     {
-        UsersRequestHelper helper = new(GET_USERS_URL, streams.Select(stream => stream.UserId).ToArray());
+        var nonBlockedStreams = streams.Select(stream => stream.UserId).ToArray();
+
+        if (nonBlockedStreams.Length == 0)
+            return new();
+
+        UsersRequestHelper helper = new(GET_USERS_URL, nonBlockedStreams);
 
         return await FetchItems<User, Users, string[]>(helper, false);
     }
@@ -293,8 +296,11 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
         if (doRecalculation)
             RecalculatePageCount();
-            
-        FillPage((Page - 1) * _elementsPerPage);
+
+        if (PageCount > 0)
+            FillPage((Page - 1) * _elementsPerPage);
+
+        HasStreams = CurrentPageLiveStreams.Count > 0;
     }
 
     public void UnsubscribeFromEvents()
@@ -309,10 +315,12 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
     public void RecalculatePageCount()
     {
         PageCount = (int)Math.Ceiling((double)_liveStreams.Count / _elementsPerPage);
-        Page = Math.Clamp(Page, 1, PageCount);
+
+        if (PageCount > 0)
+            Page = Math.Clamp(Page, 1, PageCount);
 
         CanGoBack = Page > 1;
-        CanGoNext = Page < PageCount;
+        CanGoNext = Page < PageCount && PageCount > 0;
     }
 
     private void FillPage(int fromIndex)
@@ -343,8 +351,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
             stream.BlockRequested += OnBlockRequested;
             stream.OpenRequested += OnOpenRequested;
         }
-
-        HasStreams = CurrentPageLiveStreams.Count > 0;
     }
 
     public void Run() => _ = Task.Run(Refresh);
@@ -378,16 +384,22 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
         CurrentPageLiveStreams.Remove(stream);
 
         SettingsScreenViewModel.BlockedStreams.Add(new BlockedStreamViewModel(stream.Username));
-
-        var oldPageCount = PageCount;
  
         // We start filling from the last index of the page post removal.
-        RecalculatePageCount();
+        //RecalculatePageCount();
 
-        if (oldPageCount == PageCount)
+        // Cases:
+        // - An element got removed, and the last page is now empty, but we are not on the last page.
+        // Result: Just fill the current page.
+        // - An element got removed, and the last page is now empty, and we are on the last page.
+        // Result: Go back one page (The current value of Page since it got clamped to the last page)
+
+        if (Page != PageCount || CurrentPageLiveStreams.Count > 0) // We are not on the last page, or the last page is not empty.
             FillPage(Page * _elementsPerPage - 1);
-        else
-            ChangePage(Page, false);
+        else // We are on the last page, and it's empty.
+            GoBack();
+
+        RecalculatePageCount();
     }
 
     private void OnOpenRequested(object? sender, string url)
