@@ -30,13 +30,21 @@
 
   <Button Command="{Binding Open}" HorizontalAlignment="Stretch">
     <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *, Auto" Margin="10, 5">
-      <labs:AsyncImage Source="{Binding ProfilePictureUrl}" MinWidth="70" MaxHeight="70" Grid.RowSpan="2" Grid.Column="0" />
+
+      <labs:AsyncImage Source="{Binding ProfilePictureUrl}" MinWidth="70" MaxHeight="70" Grid.RowSpan="2" Grid.Column="0">
+        <labs:AsyncImage.ImageTransition>
+          <CrossFade Duration="0:0:0.2000" />
+        </labs:AsyncImage.ImageTransition>
+      </labs:AsyncImage>
+
       <TextBlock Text="{Binding Username}" FontSize="16.8" Grid.Row="0" Grid.Column="1" />
       <TextBlock Text="{Binding Game}" Foreground="#ADADB8" FontSize="15.6" Grid.Row="1" Grid.Column="1" />
+
       <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">
         <Ellipse Fill="Red" Width="8" Height="8" Margin="0, 6, 0, 0" VerticalAlignment="Top" />
         <TextBlock Text="{Binding ViewersCountText}" FontSize="15.6" Margin="5, 0, 0, 0" VerticalAlignment="Top" />
       </StackPanel>
+
     </Grid>
 
     <Button.ContextMenu>
