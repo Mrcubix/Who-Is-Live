@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,7 +11,6 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Splat;
 using WhoIsLive.Lib.Events;
 using WhoIsLive.Lib.Interfaces;
 using WhoIsLive.UX.Entities;
@@ -18,7 +18,6 @@ using WhoIsLive.UX.Entities.API;
 using WhoIsLive.UX.Entities.API.Arrays;
 using WhoIsLive.UX.Helpers.API;
 using WhoIsLive.UX.Interfaces;
-using WhoIsLive.UX.Lib;
 using WhoIsLive.UX.ViewModels.Controls;
 
 namespace WhoIsLive.UX.ViewModels.Screens;
@@ -54,11 +53,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     private string _cursor;
 
-    private bool _canGoNext;
-
     private int _elementsPerPage;
-
-    private int _previousEndIndex;
 
     #endregion
 
@@ -70,6 +65,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
     [ObservableProperty]
     private ObservableCollection<LiveStreamViewModel> _currentPageLiveStreams;
 
+    [ObservableProperty]
     private int _page;
 
     [ObservableProperty]
@@ -80,6 +76,9 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     [ObservableProperty]
     private bool _hasStreams;
+
+    [ObservableProperty]
+    private bool _canGoNext;
 
     #endregion
 
@@ -136,24 +135,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     #region Properties
 
-    public int Page
-    {
-        get => _page;
-        set
-        {
-            SetProperty(ref _page, value);
-
-            CanGoBack = Page > 1;
-            CanGoNext = Page < PageCount;
-        }
-    }
-
-    public bool CanGoNext
-    {
-        get => _canGoNext;
-        set => SetProperty(ref _canGoNext, value);
-    }
-
     public bool HasAuthenticationFailed { get; set; } = false;
 
     #endregion
@@ -203,20 +184,6 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
         if (followedStreams != null)
             Dispatcher.UIThread.Invoke(StartOver);
-    }
-
-    [RelayCommand]
-    public void OpenSettings()
-    {
-        NextViewModel = SettingsScreenViewModel;
-    }
-
-    private void StartOver()
-    {
-        Page = 1;
-        PageCount = (int)Math.Ceiling((double)_liveStreams.Count / _elementsPerPage);
-
-        UpdatePageLiveStreams();
     }
 
     private async Task<List<LiveStream>?> GetFollowedStreams()
@@ -303,23 +270,63 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
     #endregion
 
-    private void UpdatePageLiveStreams()
+    [RelayCommand]
+    public void OpenSettings()
     {
-        var startIndex = (Page - 1) * _elementsPerPage;
-        var endIndex = Math.Clamp(startIndex + _elementsPerPage, 0, _liveStreams.Count);
+        NextViewModel = SettingsScreenViewModel;
+    }
 
-        if (endIndex == _previousEndIndex)
-            return;
+    private void StartOver() => ChangePage(1);
 
-        _previousEndIndex = endIndex;
+    public override void GoBack() => ChangePage(Page - 1);
+
+    [RelayCommand]
+    public void GoNext() => ChangePage(Page + 1);
+
+    private void ChangePage(int page, bool doRecalculation = true)
+    {
+        Page = page;
 
         CurrentPageLiveStreams.Clear();
 
-        if (startIndex >= _liveStreams.Count)
+        if (doRecalculation)
+            RecalculatePageCount();
+            
+        FillPage((Page - 1) * _elementsPerPage);
+    }
+
+    public void RecalculatePageCount()
+    {
+        PageCount = (int)Math.Ceiling((double)_liveStreams.Count / _elementsPerPage);
+        Page = Math.Clamp(Page, 1, PageCount);
+
+        CanGoBack = Page > 1;
+        CanGoNext = Page < PageCount;
+    }
+
+    private void FillPage(int fromIndex)
+    {
+        // We need to make sure that we don't add more elements than we need.
+        if (CurrentPageLiveStreams.Count == _elementsPerPage)
             return;
 
-        foreach (var stream in _liveStreams.GetRange(startIndex, endIndex - startIndex))
+        // We need to make sure that we don't start out of bounds.
+        if (fromIndex >= _liveStreams.Count)
+            return;
+
+        // calculate how many elements to fill
+        var fillCount = (Page * _elementsPerPage) - fromIndex;
+
+        if (fillCount <= 0)
+            return;
+
+        // Clamp the end index to make sure we don't go out of bounds.
+        var endIndex = Math.Clamp(fromIndex + fillCount, 0, _liveStreams.Count);
+
+        for (int i = fromIndex; i < endIndex; i++)
         {
+            var stream = _liveStreams[i]; 
+
             CurrentPageLiveStreams.Add(stream);
             stream.BlockRequested += OnBlockRequested;
             stream.OpenRequested += OnOpenRequested;
@@ -328,22 +335,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
         HasStreams = CurrentPageLiveStreams.Count > 0;
     }
 
-    public void Run()
-    {
-        _ = Refresh();
-    }
-
-    protected override void GoBack() => ChangePage(-1);
-
-    [RelayCommand(CanExecute = nameof(CanGoNext))]
-    public void GoNext() => ChangePage(1);
-
-    private void ChangePage(int increment)
-    {
-        Page = Math.Clamp(Page + increment, 1, PageCount);
-
-        UpdatePageLiveStreams();
-    }
+    public void Run() => _ = Task.Run(Refresh);
 
     public void Dispose()
     {
@@ -371,10 +363,19 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
             return;
 
         _liveStreams.RemoveAt(index);
-
         CurrentPageLiveStreams.Remove(stream);
 
         SettingsScreenViewModel.BlockedStreams.Add(new BlockedStreamViewModel(stream.Username));
+
+        var oldPageCount = PageCount;
+ 
+        // We start filling from the last index of the page post removal.
+        RecalculatePageCount();
+
+        if (oldPageCount == PageCount)
+            FillPage(Page * _elementsPerPage - 1);
+        else
+            ChangePage(Page, false);
     }
 
     private void OnOpenRequested(object? sender, string url)
