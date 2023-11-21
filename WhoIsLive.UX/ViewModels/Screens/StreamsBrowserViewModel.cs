@@ -287,12 +287,23 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
     {
         Page = page;
 
+        UnsubscribeFromEvents();
+
         CurrentPageLiveStreams.Clear();
 
         if (doRecalculation)
             RecalculatePageCount();
             
         FillPage((Page - 1) * _elementsPerPage);
+    }
+
+    public void UnsubscribeFromEvents()
+    {
+        foreach (var stream in CurrentPageLiveStreams)
+        {
+            stream.BlockRequested -= OnBlockRequested;
+            stream.OpenRequested -= OnOpenRequested;
+        }
     }
 
     public void RecalculatePageCount()
@@ -328,6 +339,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
             var stream = _liveStreams[i]; 
 
             CurrentPageLiveStreams.Add(stream);
+
             stream.BlockRequested += OnBlockRequested;
             stream.OpenRequested += OnOpenRequested;
         }
