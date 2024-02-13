@@ -67,7 +67,7 @@
         <Grid RowDefinitions="Auto, *, Auto" MinWidth="350">
           <Grid Name="VIEW_Header" ColumnDefinitions="Auto, *, Auto, Auto" Grid.Row="0" Margin="16">
             <TextBlock Text="{x:Static locals:Resources.StreamsBrowserTitle}" FontSize="24" FontWeight="Bold" Grid.Column="0"/>
-            <Button Content="{x:Static locals:Resources.StreamsBrowserRefreshButtonLabel}" Command="{Binding RefreshCommand}" Grid.Column="2" />
+            <Button Content="{x:Static locals:Resources.StreamsBrowserRefreshButtonLabel}" Command="{Binding RefreshCommand}" HotKey="F5" Grid.Column="2" />
             <Button Name="VIEW_SettingsButton" Command="{Binding OpenSettings}" Grid.Column="3">
               <Image Source="/Assets/Icons/gear.png" Width="24" Height="24" Margin="0,1,0,0" />
             </Button>
@@ -87,8 +87,8 @@
                      IsVisible="{Binding !HasStreams}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
           <Grid Name="PageNavigationBar" ColumnDefinitions="Auto, *, Auto" Grid.Row="3" Margin="16">
-            <Button Name="PreviousPageButton" Content="&lt;" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
-            <Button Name="NextPageButton" Content="&gt;" Command="{Binding GoNextCommand}" IsEnabled="{Binding CanGoNext}" Grid.Column="2" />
+            <Button Name="PreviousPageButton" Content="&lt;" Command="{Binding GoBack}" HotKey="Left" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
+            <Button Name="NextPageButton" Content="&gt;" Command="{Binding GoNextCommand}" HotKey="Right" IsEnabled="{Binding CanGoNext}" Grid.Column="2" />
           </Grid>
         </Grid>
       </DataTemplate>
