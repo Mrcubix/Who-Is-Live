@@ -126,7 +126,8 @@ public class MainViewModel : NavigableViewModel, IRunner
             return;
         }
 
-        ValidateToken();
+        if (!ValidateToken())
+            return;
 
         _streamsBrowserViewModel = new StreamsBrowserViewModel(CLIENT_ID, _accessToken, _userID, _settings);
 
@@ -156,7 +157,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         _accessToken = Encoding.UTF8.GetString(_obfuscator.DeObfuscate(encryptedToken));
     }
 
-    private void ValidateToken()
+    private bool ValidateToken()
     {
         try
         {
@@ -165,16 +166,18 @@ public class MainViewModel : NavigableViewModel, IRunner
             if (string.IsNullOrEmpty(_userID))
             {
                 ShowErrorScreen(_authenticationScreenViewModel, "Authentication", "The existing token expired.");
-                return;
+                return false;
             }
         }
         catch (Exception ex)
         {
             ShowErrorScreen(null!, "Authentication", $"An error occurred while testing the authentication: {ex.Message}");
-            return;
+            return false;
         }
 
         Console.WriteLine("The user is authenticated.");
+
+        return true;
     }
 
     private void RetryAuthentication()
