@@ -154,7 +154,15 @@ public class MainViewModel : NavigableViewModel, IRunner
 
         var encryptedToken = File.ReadAllBytes(tokenFilePath);
 
-        _accessToken = Encoding.UTF8.GetString(_obfuscator.DeObfuscate(encryptedToken));
+        try
+        {
+            _accessToken = Encoding.UTF8.GetString(_obfuscator.DeObfuscate(encryptedToken));
+        }
+        catch (Exception)
+        {
+            ShowErrorScreen(null!, "Main Page", $"An error occurred while reading the token file.");
+        }
+        
     }
 
     private bool ValidateToken()
