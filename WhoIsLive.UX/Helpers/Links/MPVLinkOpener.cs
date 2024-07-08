@@ -1,8 +1,11 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using IODirectory = System.IO.Directory;
 using WhoIsLive.Lib.Interfaces;
 using WhoIsLive.UX.Entities;
+using System.IO;
+using WhoIsLive.UX.Helpers;
 
 namespace WhoIsLive.UX.Lib
 {
@@ -53,6 +56,9 @@ namespace WhoIsLive.UX.Lib
 
         public bool IsInstalled()
         {
+            if (!string.IsNullOrEmpty(Directory) && IODirectory.Exists(Directory) == false)
+                throw new ArgumentException("The specified MPV directory does not exist");
+                
             Process? process = null;
 
             var command = $"{Directory}{COMMAND}";
@@ -85,6 +91,9 @@ namespace WhoIsLive.UX.Lib
 
         public void Open(string url)
         {
+            if (!string.IsNullOrEmpty(Directory) && IODirectory.Exists(Directory) == false)
+                throw new ArgumentException("The specified MPV directory does not exist");
+
             var command = $"{Directory}{COMMAND}";
             var args = $"-p {command} -a \"{MPV_ARGUMENTS}\" {url} {Settings.Quality} --twitch-disable-ads";
             

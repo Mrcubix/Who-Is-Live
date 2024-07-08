@@ -51,7 +51,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
         // Quality
 
-        Quality = settings.Quality;
+        Quality = QualityChoices.FirstOrDefault(q => q == settings.Quality) ?? QualityChoices[0];
 
         // Elements Per page
 
@@ -129,9 +129,9 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
     public List<ILinkOpener> OpenWithChoices { get; set; }
 
-    public string[] QualityChoices { get; set; } = { "best", "720p60", "720p", "480p", "360p", "worst" };
+    public string[] QualityChoices { get; } = { "best", "720p60", "720p", "480p", "360p", "worst" };
 
-    public int[] ElementsPerPageChoices { get; set; } = { 5, 10, 25, 50, 100 };
+    public int[] ElementsPerPageChoices { get; } = { 5, 10, 25, 50, 100 };
 
     public int ElementsPerPage => ElementsPerPageChoices[ElementsPerPageIndex];
 

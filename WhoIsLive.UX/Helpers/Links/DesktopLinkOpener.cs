@@ -14,6 +14,9 @@ namespace WhoIsLive.UX.Lib
 
         public void Open(string url)
         {
+            if (Uri.TryCreate(url, UriKind.Absolute, out _) == false)
+                throw new ArgumentException("The URL is not valid", nameof(url));
+
             if (OperatingSystem.IsWindows())
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             else if (OperatingSystem.IsMacOS())
