@@ -39,4 +39,4 @@ jobs:
           files+=("$file")
         done
 
-        gh release create -d -t "Who Is Live ? $TAG" "$output_tag" "${files[@]}" -F build/hashes.txt
+        gh release create -d -t "Who Is Live ? $TAG" "$TAG" "${files[@]}" -F build/hashes.txt
