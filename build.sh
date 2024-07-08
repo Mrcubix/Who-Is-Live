@@ -37,3 +37,26 @@ zip -r build/WhoIsLive-linux-arm64.zip build/linux-arm64/*
 
 zip -r build/WhoIsLive-osx-x64.zip build/osx-x64/*
 zip -r build/WhoIsLive-osx-arm64.zip build/osx-arm64/*
+
+# Re-create hashes.txt
+> "./build/hashes.txt"
+
+# Append all hashes to hashes.txt
+(
+    cd ./build
+
+    echo "" >> hashes.txt
+
+    # Compute all UX Hashes
+    for os in win linux osx; do
+        for arch in x64 x86 arm64; do
+
+            name="WhoIsLive-$os-$arch.zip"
+
+            if [ -f "$name" ]; then
+                echo "Computing $name"
+                sha256sum $name >> "hashes.txt"
+            fi
+        done
+    done
+)
