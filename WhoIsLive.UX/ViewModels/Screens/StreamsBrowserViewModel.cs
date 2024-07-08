@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -16,6 +17,7 @@ using WhoIsLive.Lib.Interfaces;
 using WhoIsLive.UX.Entities;
 using WhoIsLive.UX.Entities.API;
 using WhoIsLive.UX.Entities.API.Arrays;
+using WhoIsLive.UX.Helpers;
 using WhoIsLive.UX.Helpers.API;
 using WhoIsLive.UX.Interfaces;
 using WhoIsLive.UX.ViewModels.Controls;
@@ -98,6 +100,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
         _client = new HttpClient();
         _liveStreams = new List<LiveStreamViewModel>();
 
+        NotificationManager = new NotificationManager();
         CurrentPageLiveStreams = new ObservableCollection<LiveStreamViewModel>();
 
         // Elements per page
@@ -134,6 +137,8 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
     #region Properties
 
     public bool HasAuthenticationFailed { get; set; } = false;
+
+    public NotificationManager NotificationManager { get; }
 
     #endregion
 
@@ -412,7 +417,15 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
         if (index == -1)
             return;
 
-        SettingsScreenViewModel.OpenWith.Open(url);
+        try
+        {
+            NotificationManager.Add("Information", $"Opening the stream: {stream.Username}", NotificationType.Information, 10);
+            SettingsScreenViewModel.OpenWith.Open(url);
+        }
+        catch (Exception ex)
+        {
+            NotificationManager.Add("Error", $"An error occurred while attempting to open the stream: \n \n {ex.Message}", NotificationType.Error);
+        }
     }
 
     private void OnSettingsChanged(object? sender, PropertyChangedEventArgs e)

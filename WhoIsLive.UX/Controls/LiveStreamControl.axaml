@@ -4,12 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm-controls="clr-namespace:WhoIsLive.UX.ViewModels.Controls"
              xmlns:labs="clr-namespace:Avalonia.Labs.Controls;assembly=Avalonia.Labs.Controls"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="590" d:DesignHeight="490"
              x:Class="WhoIsLive.UX.Controls.LiveStreamControl"
              x:DataType="vm-controls:LiveStreamViewModel">
 
   <Design.DataContext>
-    <vm-controls:LiveStreamViewModel />
+    <vm-controls:LiveStreamViewModel Login="btmc" Username="BMC" Game="Minecraft" 
+                                     Viewers="727" ProfilePictureUrl="https://cdn.7tv.app/emote/643ce6a2ce9e08be709d62c1/4x.webp" 
+                                     Title="A generated title"/>
   </Design.DataContext>
 
   <UserControl.Styles>
@@ -28,7 +30,7 @@
     </Style>
   </UserControl.Styles>
 
-  <Button Command="{Binding Open}" HorizontalAlignment="Stretch">
+  <Button Command="{Binding Open}" HorizontalAlignment="Stretch" ToolTip.Tip="{Binding Title}">
     <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *, Auto" Margin="10, 5">
 
       <labs:AsyncImage Source="{Binding ProfilePictureUrl}" MinWidth="70" MaxHeight="70" Grid.RowSpan="2" Grid.Column="0">

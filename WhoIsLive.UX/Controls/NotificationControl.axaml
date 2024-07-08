@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm-controls="clr-namespace:WhoIsLive.UX.ViewModels.Controls"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="200"
+             x:Class="WhoIsLive.UX.Controls.NotificationControl"
+             x:DataType="vm-controls:NotificationViewModel">
+
+  <Design.DataContext>
+    <vm-controls:NotificationViewModel Title="Example Title"
+                                       Message="Example Message"/>
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="Border">
+      <Setter Property="Width" Value="300" />
+    </Style>
+    <Style Selector="Border.Hidden">
+      <Setter Property="Opacity" Value="0" />
+    </Style>
+    <Style Selector="Border:not(.Hidden)">
+      <Setter Property="Opacity" Value="1" />
+    </Style>
+    <Style Selector="Border TextBlock">
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+    <Style Selector="Border.Info">
+      <Setter Property="Background" Value="#BD459DB9" />
+    </Style>
+    <Style Selector="Border.Success">
+      <Setter Property="Background" Value="#BD488757" />
+    </Style>
+    <Style Selector="Border.Warning">
+      <Setter Property="Background" Value="#BDEE9040" />
+    </Style>
+    <Style Selector="Border.Error">
+      <Setter Property="Background" Value="#BDCB4653" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style Selector="Button > ContentPresenter:pointerover">
+      <Setter Property="Background" Value="Transparent" />
+    </Style>
+  </UserControl.Styles>
+
+  <Border Margin="16" Padding="8" CornerRadius="4" Grid.Column="0" HorizontalAlignment="Right"
+          Classes.Info="{Binding IsInfo}"
+          Classes.Success="{Binding IsSuccess}"
+          Classes.Warning="{Binding IsWarning}" 
+          Classes.Error="{Binding IsError}" 
+          Classes.Hidden="{Binding IsHidden}">
+
+    <Border.Transitions>
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="{Binding TransitionDuration}" />
+      </Transitions>
+    </Border.Transitions>
+
+    <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding ScheduleHide}" CommandParameter="0">
+      <Grid RowDefinitions="Auto, Auto, Auto">
+        <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <TextBlock Grid.Row="1"/>
+        <TextBlock Text="{Binding Message}" Grid.Row="2" HorizontalAlignment="Left" />
+      </Grid>
+    </Button>
+
+  </Border>
+
+</UserControl>

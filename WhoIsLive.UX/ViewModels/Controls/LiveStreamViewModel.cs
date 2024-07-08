@@ -23,6 +23,9 @@ public partial class LiveStreamViewModel : ViewModelBase, IEquatable<LiveStreamV
     private string _username = string.Empty;
 
     [ObservableProperty]
+    private string _title = string.Empty;
+
+    [ObservableProperty]
     private string _game = "Just Chatting";
 
     private int _viewers = 0;
@@ -42,23 +45,26 @@ public partial class LiveStreamViewModel : ViewModelBase, IEquatable<LiveStreamV
         UserId = stream.UserId;
         Login = stream.UserLogin;
         Username = stream.UserName;
+        Title = stream.Title;
         Game = stream.GameName;
         Viewers = stream.ViewerCount;
     }
 
-    public LiveStreamViewModel(string login, string username, string game, int viewers)
+    public LiveStreamViewModel(string login, string username, string title, string game, int viewers)
     {
         Login = login;
         Username = username;
+        Title = title;
         Game = game;
         Viewers = viewers;
     }
 
-    public LiveStreamViewModel(string profilePictureUrl, string login, string username, string game, int viewers)
+    public LiveStreamViewModel(string profilePictureUrl, string login, string username, string title, string game, int viewers)
     {
         ProfilePictureUrl = profilePictureUrl;
         Login = login;
         Username = username;
+        Title = title;
         Game = game;
         Viewers = viewers;
     }

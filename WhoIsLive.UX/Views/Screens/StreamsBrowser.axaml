@@ -30,10 +30,15 @@
     <Style Selector="Grid#VIEW_Header > Button">
       <Setter Property="HorizontalAlignment" Value="Right" />
     </Style>
+    <Style Selector="Grid#VIEW_Header > Button">
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
     <Style Selector="ItemsControl#StreamsList">
       <Setter Property="HorizontalAlignment" Value="Stretch" />
       <Setter Property="VerticalAlignment" Value="Top" />
     </Style>
+
     <Style Selector="Grid#PageNavigationBar">
       <Setter Property="HorizontalAlignment" Value="Stretch" />
       <Setter Property="VerticalAlignment" Value="Bottom" />
@@ -47,9 +52,7 @@
       <Setter Property="Height" Value="32" />
       <Setter Property="Padding" Value="8, 4, 8, 6" />
     </Style>
-    <Style Selector="Grid#VIEW_Header > Button">
-      <Setter Property="HorizontalContentAlignment" Value="Left" />
-    </Style>
+
     <Style Selector="Button#VIEW_SettingsButton">
       <Setter Property="Margin" Value="8, 0, 0, 0" />
       <Setter Property="Background" Value="Transparent" />
@@ -65,6 +68,7 @@
     <ContentControl.DataTemplates>
       <DataTemplate DataType="vm:StreamsBrowserViewModel">
         <Grid RowDefinitions="Auto, *, Auto" MinWidth="350">
+
           <Grid Name="VIEW_Header" ColumnDefinitions="Auto, *, Auto, Auto" Grid.Row="0" Margin="16">
             <TextBlock Text="{x:Static locals:Resources.StreamsBrowserTitle}" FontSize="24" FontWeight="Bold" Grid.Column="0"/>
             <Button Content="{x:Static locals:Resources.StreamsBrowserRefreshButtonLabel}" Command="{Binding RefreshCommand}" HotKey="F5" Grid.Column="2" />
@@ -83,6 +87,14 @@
             </ItemsControl>
           </ScrollViewer>
 
+          <ItemsControl Name="VIEW_Notifications" ItemsSource="{Binding NotificationManager.Notifications}" Grid.Row="1">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="vm-controls:NotificationViewModel">
+                <controls:NotificationControl />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
           <TextBlock Text="{x:Static locals:Resources.StreamsBrowserNoStreamsLabel}" FontSize="16" FontWeight="Bold" 
                      IsVisible="{Binding !HasStreams}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
 
@@ -90,6 +102,7 @@
             <Button Name="PreviousPageButton" Content="&lt;" Command="{Binding GoBack}" HotKey="Left" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
             <Button Name="NextPageButton" Content="&gt;" Command="{Binding GoNextCommand}" HotKey="Right" IsEnabled="{Binding CanGoNext}" Grid.Column="2" />
           </Grid>
+
         </Grid>
       </DataTemplate>
       <DataTemplate DataType="vm:SettingsScreenViewModel">
