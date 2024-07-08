@@ -1,0 +1,42 @@
+name: Generate Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'The tag to create for the release'
+        required: true
+
+jobs:
+  release:
+    permissions:
+      contents: write
+
+    runs-on: ubuntu-latest
+    name: Generate Release
+    env:
+      TAG: ${{ github.event.inputs.tag }}
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build
+      run: bash ./build.sh
+
+    - name: Create Release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        declare -a files
+
+        # Add UX
+        for file in build/*.zip; do
+          files+=("$file")
+        done
+
+        gh release create -d -t "Who Is Live ? $TAG" "$output_tag" "${files[@]}" -F build/hashes.txt
