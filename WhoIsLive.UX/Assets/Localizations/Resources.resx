@@ -57,4 +57,28 @@
     <data name="SettingsScreenBlockedStreamsToolTip" xml:space="preserve">
         <value>(A refresh will be required to view the unblocked streams)</value>
     </data>
+    <data name="SettingLoadErrorLabel" xml:space="preserve">
+        <value>An error occurred while loading the settings</value>
+    </data>
+    <data name="TokenLoadErrorLabel" xml:space="preserve">
+        <value>An error occurred while reading the token file.</value>
+    </data>
+    <data name="TokenExpiredLabel" xml:space="preserve">
+        <value>The existing token expired.</value>
+    </data>
+    <data name="AuthenticationErrorLabel" xml:space="preserve">
+        <value>An error occurred while testing the authentication</value>
+    </data>
+    <data name="FileCreationErrorLabel" xml:space="preserve">
+        <value>An error occurred while creating the token file</value>
+    </data>
+    <data name="ResponseParsingErrorLabel" xml:space="preserve">
+        <value>An error occurred while parsing the response.</value>
+    </data>
+    <data name="LaunchNotificationLabel" xml:space="preserve">
+        <value>Opening the stream</value>
+    </data>
+    <data name="LaunchErrorNotificationLabel" xml:space="preserve">
+        <value>An error occurred while attempting to open the stream</value>
+    </data>
 </root>

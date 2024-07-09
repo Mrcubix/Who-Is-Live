@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +9,7 @@ using WhoIsLive.Lib.Interfaces;
 using WhoIsLive.UX.Cryptography;
 using WhoIsLive.UX.Entities;
 using WhoIsLive.UX.ViewModels.Screens;
+using Resources = WhoIsLive.UX.Assets.Localizations.Resources;
 
 namespace WhoIsLive.UX.ViewModels;
 
@@ -104,7 +104,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         }
         catch (Exception ex)
         {
-            ShowErrorScreen(null!, "Main Page", $"An error occurred while loading the settings: {ex.Message}");
+            ShowErrorScreen(null!, "Main Page", $"{Resources.SettingLoadErrorLabel}: {ex.Message}");
             _settings = new Settings(SETTINGS_FILE_PATH);
             return;
         }
@@ -160,7 +160,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         }
         catch (Exception)
         {
-            ShowErrorScreen(null!, "Main Page", $"An error occurred while reading the token file.");
+            ShowErrorScreen(null!, "Main Page", $"{Resources.TokenLoadErrorLabel}");
         }
         
     }
@@ -173,13 +173,13 @@ public class MainViewModel : NavigableViewModel, IRunner
 
             if (string.IsNullOrEmpty(_userID))
             {
-                ShowErrorScreen(_authenticationScreenViewModel, "Authentication", "The existing token expired.");
+                ShowErrorScreen(_authenticationScreenViewModel, "Authentication", Resources.TokenExpiredLabel);
                 return false;
             }
         }
         catch (Exception ex)
         {
-            ShowErrorScreen(null!, "Authentication", $"An error occurred while testing the authentication: {ex.Message}");
+            ShowErrorScreen(null!, "Authentication", $"{Resources.AuthenticationErrorLabel}: {ex.Message}");
             return false;
         }
 
@@ -236,7 +236,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         }
         catch (Exception ex)
         {
-            ShowErrorScreen(null!, "Main Page", $"An error occurred while creating the token file: {ex.Message}");
+            ShowErrorScreen(null!, "Main Page", $"{Resources.FileCreationErrorLabel}: {ex.Message}");
             return;
         }
 

@@ -10,11 +10,12 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/WhoIsLive.UX.Desktop/bin/Debug/net7.0/WhoIsLive.UX.Desktop.dll",
+            "program": "${workspaceFolder}/WhoIsLive.UX.Desktop/bin/Debug/net8.0/WhoIsLive.UX.Desktop.dll",
             "args": [],
             "cwd": "${workspaceFolder}/WhoIsLive.UX.Desktop",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
+            "requireExactSource": false,
             "stopAtEntry": false
         },
         {

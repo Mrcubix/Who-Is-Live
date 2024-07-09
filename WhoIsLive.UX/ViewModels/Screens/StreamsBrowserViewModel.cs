@@ -21,6 +21,7 @@ using WhoIsLive.UX.Helpers;
 using WhoIsLive.UX.Helpers.API;
 using WhoIsLive.UX.Interfaces;
 using WhoIsLive.UX.ViewModels.Controls;
+using Resources = WhoIsLive.UX.Assets.Localizations.Resources;
 
 namespace WhoIsLive.UX.ViewModels.Screens;
 
@@ -247,7 +248,7 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
                 }
                 catch (Exception)
                 {
-                    ErrorOccurred?.Invoke(this, new ProcessErrorEventArgs(SOURCE, "An error occurred while parsing the response."));
+                    ErrorOccurred?.Invoke(this, new ProcessErrorEventArgs(SOURCE, Resources.ResponseParsingErrorLabel));
                     isSuccessful = false;
                 }
             }
@@ -419,12 +420,12 @@ public partial class StreamsBrowserViewModel : NavigableViewModel, IRunner, IDis
 
         try
         {
-            NotificationManager.Add("Information", $"Opening the stream: {stream.Username}", NotificationType.Information, 10);
+            NotificationManager.Add("Information", $"{Resources.LaunchNotificationLabel}: {stream.Username}", NotificationType.Information, 10);
             SettingsScreenViewModel.OpenWith.Open(url);
         }
         catch (Exception ex)
         {
-            NotificationManager.Add("Error", $"An error occurred while attempting to open the stream: \n \n {ex.Message}", NotificationType.Error);
+            NotificationManager.Add("Error", $"{Resources.LaunchErrorNotificationLabel}: \n \n {ex.Message}", NotificationType.Error);
         }
     }
 

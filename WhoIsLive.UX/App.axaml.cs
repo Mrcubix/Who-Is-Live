@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using WhoIsLive.UX.ViewModels;
 using WhoIsLive.UX.Views;
+using CurrentResources = WhoIsLive.UX.Assets.Localizations.Resources;
 
 namespace WhoIsLive.UX;
 
@@ -16,7 +17,8 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Assets.Localizations.Resources.Culture = new CultureInfo("en-US");
+        if (CultureInfo.CurrentCulture == CultureInfo.InvariantCulture)
+            CurrentResources.Culture = CultureInfo.GetCultureInfo("en-US");
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

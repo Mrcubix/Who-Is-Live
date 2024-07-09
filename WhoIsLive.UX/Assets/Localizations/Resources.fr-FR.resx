@@ -57,4 +57,28 @@
     <data name="SettingsScreenBlockedStreamsToolTip" xml:space="preserve">
         <value>(Une actualisation est neccésaire pour voir un Live débloqué)</value>
     </data>
+    <data name="SettingLoadErrorLabel" xml:space="preserve">
+        <value>Une erreur est survenue lors du chargement des paramètres</value>
+    </data>
+    <data name="TokenLoadErrorLabel" xml:space="preserve">
+        <value>Une erreur est survenue lors du chargement du jeton d'authentification.</value>
+    </data>
+    <data name="TokenExpiredLabel" xml:space="preserve">
+        <value>Le jeton d'authentification a expiré</value>
+    </data>
+    <data name="AuthenticationErrorLabel" xml:space="preserve">
+        <value>Une erreur est survenue lors de l'authentification</value>
+    </data>
+    <data name="FileCreationErrorLabel" xml:space="preserve">
+        <value>Une erreur est survenue lors de la création du fichier de jeton</value>
+    </data>
+    <data name="ResponseParsingErrorLabel" xml:space="preserve">
+        <value>Une erreur est survenue lors de l'analyse de la reponse.</value>
+    </data>
+    <data name="LaunchNotificationLabel" xml:space="preserve">
+        <value>Ouverture du stream</value>
+    </data>
+    <data name="LaunchErrorNotificationLabel" xml:space="preserve">
+        <value>Une erreur est survenue lors de l'ouverture du stream</value>
+    </data>
 </root>

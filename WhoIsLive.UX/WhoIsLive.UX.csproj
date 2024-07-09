@@ -13,12 +13,12 @@
   <ItemGroup>
     <EmbeddedResource Update="Assets/Localizations/Resources.resx">
       <Generator>MSBuild:Compile</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>%(FileName).Designer.cs</LastGenOutput>
       <publicClass>true</publicClass>
-      <StronglyTypedFileName>$(IntermediateOutputPath)/Resources.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)/%(FileName).Designer.cs</StronglyTypedFileName>
       <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
-      <StronglyTypedNamespace>WhoIsLive.UX.Assets.Localizations</StronglyTypedNamespace>
-      <StronglyTypedClassName>Resources</StronglyTypedClassName>
+      <StronglyTypedNamespace>$(RootNamespace).Assets.Localizations</StronglyTypedNamespace>
+      <StronglyTypedClassName>%(FileName)</StronglyTypedClassName>
     </EmbeddedResource>
   </ItemGroup>
 

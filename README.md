@@ -8,7 +8,7 @@ This app makes use of streamlink to achieve this! (https://streamlink.github.io/
 
 ## Dependencies
 
-- .NET 8 Desktop Runtime (https://dotnet.microsoft.com/download/dotnet/7.0) (Middle right of this page)
+- .NET 8 Desktop Runtime (https://dotnet.microsoft.com/download/dotnet/8.0) (Middle right of this page)
 
 ## Optional Dependencies
 
