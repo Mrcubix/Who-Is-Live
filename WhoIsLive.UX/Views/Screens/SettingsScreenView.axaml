@@ -43,14 +43,14 @@
     </Style>
   </UserControl.Styles>
 
-  <Grid RowDefinitions="Auto, Auto, Auto, Auto, *" ColumnDefinitions="*, *">
+  <Grid RowDefinitions="Auto, Auto, Auto, Auto, *">
 
-    <Grid ColumnDefinitions="Auto, Auto, *" Margin="16" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+    <Grid ColumnDefinitions="Auto, Auto, *" Margin="16" Grid.Row="0">
       <Button Name="VIEW_BackButton" Content="←" Command="{Binding GoBackCommand}" Grid.Column="0" />
       <TextBlock Text="{x:Static locals:Resources.StreamsBrowserSettingsLabel}" FontSize="24" FontWeight="Bold" Margin="16, 0" Grid.Column="1" />
     </Grid>
 
-    <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *" Grid.Row="1" Grid.Column="0" Margin="16, 0">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions="Auto, *" Grid.Row="1" Margin="16, 0">
       
       <TextBlock Text="{x:Static locals:Resources.StreamsBrowserElementsPerPageLabel}" Grid.Row="0" Grid.Column="0" />
       <ComboBox ItemsSource="{Binding ElementsPerPageChoices}" SelectedIndex="{Binding ElementsPerPageIndex}" Grid.Row="0" Grid.Column="1" />
@@ -67,21 +67,20 @@
         </ComboBox.ItemTemplate>
       </ComboBox>
 
-    </Grid>
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenVLCDirectoryPath}" Grid.Row="3" Grid.Column="0" />
+      <TextBox Text="{Binding VLCDirectory}" Grid.Row="3" Grid.Column="1" />
 
-    <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="Auto, *" Grid.Row="1" Grid.Column="1" Margin="16, 0">
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenVLCDirectoryPath}" Grid.Row="3" Grid.Column="0" />
+      <TextBox Text="{Binding VLCDirectory}" Grid.Row="3" Grid.Column="1" />
 
-      <TextBlock Text="{x:Static locals:Resources.SettingsScreenVLCDirectoryPath}" Grid.Row="0" Grid.Column="0" />
-      <TextBox Text="{Binding VLCDirectory}" Grid.Row="0" Grid.Column="1" />
-
-      <TextBlock Text="{x:Static locals:Resources.SettingsScreenMPVDirectoryPath}" Grid.Row="1" Grid.Column="0" />
-      <TextBox Text="{Binding MPVDirectory}" Grid.Row="1" Grid.Column="1" />
+      <TextBlock Text="{x:Static locals:Resources.SettingsScreenMPVDirectoryPath}" Grid.Row="4" Grid.Column="0" />
+      <TextBox Text="{Binding MPVDirectory}" Grid.Row="4" Grid.Column="1" />
 
     </Grid>
 
     <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="16" />
 
-    <Grid RowDefinitions="Auto, *" ColumnDefinitions="Auto, Auto, *" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+    <Grid RowDefinitions="Auto, *" ColumnDefinitions="Auto, Auto, *" Grid.Row="3">
 
       <TextBlock Text="{x:Static locals:Resources.SettingsScreenBlockedStreamsLabel}" FontSize="20" FontWeight="DemiBold" 
                  Grid.Row="0" Grid.Column="0" Margin="16, 16, 0, 16" VerticalAlignment="Center" />
