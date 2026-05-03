@@ -4,8 +4,6 @@ using System.Diagnostics;
 using IODirectory = System.IO.Directory;
 using WhoIsLive.Lib.Interfaces;
 using WhoIsLive.UX.Entities;
-using System.IO;
-using WhoIsLive.UX.Helpers;
 
 namespace WhoIsLive.UX.Lib
 {
@@ -34,6 +32,8 @@ namespace WhoIsLive.UX.Lib
         #region Properties
 
         public Settings Settings { get; set; }
+        
+        public string DisplayName => "VLC";
 
         public string Directory
         {
@@ -41,14 +41,12 @@ namespace WhoIsLive.UX.Lib
             set
             {
                 _command = value;
-            
+
                 if (value != "")
                     if (!value.EndsWith('/') || !value.EndsWith('\\'))
                         _command += "/";
             }
         }
-
-        public string DisplayName => "VLC";
 
         #endregion
 
@@ -58,7 +56,7 @@ namespace WhoIsLive.UX.Lib
         {
             if (!string.IsNullOrEmpty(Directory) && IODirectory.Exists(Directory) == false)
                 throw new ArgumentException("The specified VLC directory does not exist");
-                
+
             Process? process = null;
 
             var command = $"{Directory}{COMMAND}";
@@ -85,7 +83,7 @@ namespace WhoIsLive.UX.Lib
                 process.Kill();
 
             process.WaitForExit();
-            
+
             if (OperatingSystem.IsWindows())
                 return process.ExitCode != 9009 && process.ExitCode != 1;
             else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())

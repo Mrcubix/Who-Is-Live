@@ -55,7 +55,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
         // Elements Per page
 
-        ElementsPerPageIndex = Math.Clamp(settings.ElementsPerPageIndex, 
+        ElementsPerPageIndex = Math.Clamp(settings.ElementsPerPageIndex,
                                           0, ElementsPerPageChoices.Length - 1);
 
         // Open With
@@ -93,7 +93,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
         foreach (var blockedStream in settings.BlockedStreams)
         {
             var stream = new BlockedStreamViewModel(blockedStream);
-            stream.UnblockRequested += OnUnblockRquested;
+            stream.UnblockRequested += OnUnblockRequested;
 
             BlockedStreams.Add(stream);
         }
@@ -175,7 +175,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
     public override void GoBack() => BackRequested?.Invoke(this, EventArgs.Empty);
 
-    public void OnUnblockRquested(object? sender, EventArgs e)
+    public void OnUnblockRequested(object? sender, EventArgs e)
     {
         if (sender is not BlockedStreamViewModel blockedStreamViewModel)
             return;
@@ -215,7 +215,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
                 if (item is BlockedStreamViewModel stream)
                 {
                     _settings.BlockedStreams.Add(stream.Username);
-                    stream.UnblockRequested += OnUnblockRquested;
+                    stream.UnblockRequested += OnUnblockRequested;
                 }
             }
         }
@@ -229,7 +229,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
                 if (item is BlockedStreamViewModel stream)
                 {
                     _settings.BlockedStreams.Remove(stream.Username);
-                    stream.UnblockRequested -= OnUnblockRquested;
+                    stream.UnblockRequested -= OnUnblockRequested;
                 }
             }
         }

@@ -4,8 +4,6 @@ using System.Diagnostics;
 using IODirectory = System.IO.Directory;
 using WhoIsLive.Lib.Interfaces;
 using WhoIsLive.UX.Entities;
-using System.IO;
-using WhoIsLive.UX.Helpers;
 
 namespace WhoIsLive.UX.Lib
 {
@@ -19,6 +17,8 @@ namespace WhoIsLive.UX.Lib
         private const string MPV_ARGUMENTS = "--window-maximized=yes --cache=yes --demuxer-max-bytes=256MiB --loop-file=inf";
 
         #endregion
+
+        private readonly string _extension = OperatingSystem.IsWindows() ? ".exe" : string.Empty;
 
         private string _command = string.Empty;
 
@@ -58,10 +58,10 @@ namespace WhoIsLive.UX.Lib
         {
             if (!string.IsNullOrEmpty(Directory) && IODirectory.Exists(Directory) == false)
                 throw new ArgumentException("The specified MPV directory does not exist");
-                
+
             Process? process = null;
 
-            var command = $"{Directory}{COMMAND}";
+            var command = $"{Directory}{COMMAND}{_extension}";
 
             try
             {
@@ -80,7 +80,7 @@ namespace WhoIsLive.UX.Lib
                 return false;
 
             process.WaitForExit();
-            
+
             if (OperatingSystem.IsWindows())
                 return process.ExitCode != 9009 && process.ExitCode != 1;
             else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
@@ -94,9 +94,9 @@ namespace WhoIsLive.UX.Lib
             if (!string.IsNullOrEmpty(Directory) && IODirectory.Exists(Directory) == false)
                 throw new ArgumentException("The specified MPV directory does not exist");
 
-            var command = $"{Directory}{COMMAND}";
+            var command = $"{Directory}{COMMAND}{_extension}";
             var args = $"-p {command} -a \"{MPV_ARGUMENTS}\" {url} {Settings.Quality} --twitch-disable-ads";
-            
+
             OpenCore(STREAMLINK_COMMAND, args);
         }
 
