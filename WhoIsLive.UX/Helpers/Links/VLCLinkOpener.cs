@@ -18,6 +18,8 @@ namespace WhoIsLive.UX.Lib
 
         #endregion
 
+        private readonly string _extension = OperatingSystem.IsWindows() ? ".exe" : string.Empty;
+
         private string _command = string.Empty;
 
         #region Constructors
@@ -43,7 +45,7 @@ namespace WhoIsLive.UX.Lib
                 _command = value;
 
                 if (value != "")
-                    if (!value.EndsWith('/') || !value.EndsWith('\\'))
+                    if (!value.EndsWith('/') && !value.EndsWith('\\'))
                         _command += "/";
             }
         }
@@ -59,7 +61,7 @@ namespace WhoIsLive.UX.Lib
 
             Process? process = null;
 
-            var command = $"{Directory}{COMMAND}";
+            var command = $"{Directory}{COMMAND}{_extension}";
 
             try
             {
@@ -97,10 +99,14 @@ namespace WhoIsLive.UX.Lib
             if (!string.IsNullOrEmpty(Directory) && IODirectory.Exists(Directory) == false)
                 throw new ArgumentException("The specified VLC directory does not exist");
 
-            var command = $"{Directory}{COMMAND}";
-            var args = $"-p {command} -a \"{VLC_ARGUMENTS}\" {url} {Settings.Quality} --twitch-disable-ads";
-            
-            OpenCore(STREAMLINK_COMMAND, args);
+            var command = $"{Directory}{COMMAND}{_extension}";
+            var args = $"-p \"{command}\" -a \"{VLC_ARGUMENTS}\" --url {url} --default-stream {Settings.Quality} --twitch-disable-ads";
+
+            var process = OpenCore(STREAMLINK_COMMAND, args);
+
+            process?.WaitForExit();
+                
+            Console.WriteLine(process?.StandardError.ReadToEnd());
         }
 
         public void Open(Uri uri)
@@ -111,7 +117,7 @@ namespace WhoIsLive.UX.Lib
         private Process? OpenCore(string command, string args = "")
         {
             if (OperatingSystem.IsWindows())
-                return Process.Start(new ProcessStartInfo(command) { Arguments = args, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden });
+                return Process.Start(new ProcessStartInfo(command) { Arguments = args, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden, RedirectStandardError = true });
             else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
                 return Process.Start(command, args);
             else

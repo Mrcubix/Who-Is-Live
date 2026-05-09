@@ -66,12 +66,12 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
         foreach (var linkOpener in linkOpeners)
         {
+            SetDirectory(linkOpener, settings);
+
             if (linkOpener.IsInstalled())
             {
                 if (linkOpener is ISettingsDependent settingsDependent)
                     settingsDependent.Settings = settings;
-
-                SetDirectory(linkOpener, settings);
 
                 OpenWithChoices.Add(linkOpener);
             }
@@ -129,7 +129,7 @@ public partial class SettingsScreenViewModel : NavigableViewModel
 
     public List<ILinkOpener> OpenWithChoices { get; set; }
 
-    public string[] QualityChoices { get; } = { "best", "720p60", "720p", "480p", "360p", "worst" };
+    public string[] QualityChoices { get; } = { "best", "1080p60", "720p60", "720p", "480p", "360p", "worst" };
 
     public int[] ElementsPerPageChoices { get; } = { 5, 10, 25, 50, 100 };
 
