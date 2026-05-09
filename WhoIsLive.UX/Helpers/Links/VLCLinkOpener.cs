@@ -102,11 +102,7 @@ namespace WhoIsLive.UX.Lib
             var command = $"{Directory}{COMMAND}{_extension}";
             var args = $"-p \"{command}\" -a \"{VLC_ARGUMENTS}\" --url {url} --default-stream {Settings.Quality} --twitch-disable-ads";
 
-            var process = OpenCore(STREAMLINK_COMMAND, args);
-
-            process?.WaitForExit();
-                
-            Console.WriteLine(process?.StandardError.ReadToEnd());
+            OpenCore(STREAMLINK_COMMAND, args);
         }
 
         public void Open(Uri uri)
@@ -117,7 +113,7 @@ namespace WhoIsLive.UX.Lib
         private Process? OpenCore(string command, string args = "")
         {
             if (OperatingSystem.IsWindows())
-                return Process.Start(new ProcessStartInfo(command) { Arguments = args, UseShellExecute = false, WindowStyle = ProcessWindowStyle.Hidden, RedirectStandardError = true });
+                return Process.Start(new ProcessStartInfo(command) { Arguments = args, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden });
             else if (OperatingSystem.IsMacOS() || OperatingSystem.IsLinux())
                 return Process.Start(command, args);
             else
