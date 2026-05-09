@@ -60,6 +60,9 @@
     <data name="SettingLoadErrorLabel" xml:space="preserve">
         <value>An error occurred while loading the settings</value>
     </data>
+    <data name="ClientIDEmptyLabel" xml:space="preserve">
+        <value>The application was compiled without a client ID for authentication.&#xD;&#xA;Please contact the application author.</value>
+    </data>
     <data name="TokenLoadErrorLabel" xml:space="preserve">
         <value>An error occurred while reading the token file.</value>
     </data>

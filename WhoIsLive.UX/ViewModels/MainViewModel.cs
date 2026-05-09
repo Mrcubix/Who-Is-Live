@@ -117,7 +117,13 @@ public class MainViewModel : NavigableViewModel, IRunner
 
     public void Run()
     {
-        ReadToken(); 
+        if (string.IsNullOrEmpty(CLIENT_ID))
+        {
+            ShowErrorScreen(null!, "Main Page", Resources.ClientIDEmptyLabel);
+            return;
+        }
+
+        ReadToken();
 
         // Check if the user is authenticated.
         if (string.IsNullOrEmpty(_accessToken))
