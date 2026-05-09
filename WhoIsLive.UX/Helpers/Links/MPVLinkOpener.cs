@@ -45,7 +45,7 @@ namespace WhoIsLive.UX.Lib
                 _command = value;
 
                 if (value != "")
-                    if (!value.EndsWith('/') || !value.EndsWith('\\'))
+                    if (!value.EndsWith('/') && !value.EndsWith('\\'))
                         _command += "/";
             }
         }
@@ -95,7 +95,7 @@ namespace WhoIsLive.UX.Lib
                 throw new ArgumentException("The specified MPV directory does not exist");
 
             var command = $"{Directory}{COMMAND}{_extension}";
-            var args = $"-p {command} -a \"{MPV_ARGUMENTS}\" {url} {Settings.Quality} --twitch-disable-ads";
+            var args = $"-p \"{command}\" -a \"{MPV_ARGUMENTS}\" --url {url} --default-stream {Settings.Quality} --twitch-disable-ads";
 
             OpenCore(STREAMLINK_COMMAND, args);
         }
