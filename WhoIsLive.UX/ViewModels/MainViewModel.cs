@@ -10,6 +10,7 @@ using WhoIsLive.UX.Cryptography;
 using WhoIsLive.UX.Entities;
 using WhoIsLive.UX.ViewModels.Screens;
 using Resources = WhoIsLive.UX.Assets.Localizations.Resources;
+using SpecialFolder = System.Environment.SpecialFolder;
 
 namespace WhoIsLive.UX.ViewModels;
 
@@ -19,7 +20,9 @@ public class MainViewModel : NavigableViewModel, IRunner
 {
     #region Constants
 
-    private static readonly string APPDATA_FOLDER_PATH = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WhoIsLive");
+    private static readonly SpecialFolder SPECIAL_FOLDER = OperatingSystem.IsAndroid() ? SpecialFolder.Personal : SpecialFolder.LocalApplicationData;
+
+    private static readonly string APPDATA_FOLDER_PATH = Path.Combine(Environment.GetFolderPath(SPECIAL_FOLDER), "WhoIsLive");
 
     private static readonly string SETTINGS_FILE_PATH = Path.Combine(APPDATA_FOLDER_PATH, "settings.json");
 
@@ -227,9 +230,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         var encryptedToken = _obfuscator.Obfuscate(Encoding.UTF8.GetBytes(_accessToken));
 
         // Save the encrypted token to a file in the local app data folder.
-        var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
-        var tokenFilePath = Path.Combine(localAppDataFolder, "WhoIsLive", "token.dat");
+        var tokenFilePath = Path.Combine(APPDATA_FOLDER_PATH, "token.dat");
 
         try
         {
@@ -242,7 +243,7 @@ public class MainViewModel : NavigableViewModel, IRunner
         }
         catch (Exception ex)
         {
-            ShowErrorScreen(null!, "Main Page", $"{Resources.FileCreationErrorLabel}: {ex.Message}");
+            ShowErrorScreen(null!, "Main Page", $"{Resources.FileCreationErrorLabel}: \n\n{ex.Message}");
             return;
         }
 
