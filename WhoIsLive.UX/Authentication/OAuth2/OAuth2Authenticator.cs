@@ -104,7 +104,11 @@ public class OAuth2Authenticator : IDisposable
         _listener = new HttpListener();
         _listener.Prefixes.Add($"http://localhost:{Port}/");
 
-        _client = new HttpClient();
+
+        if (OperatingSystem.IsAndroid())
+            _client = new HttpClient(new SocketsHttpHandler());
+        else
+            _client = new HttpClient();
 
         AuthenticationCompleted += (_, _) => _listener.Stop();
         AuthenticationFailed += (_, _) => _listener.Stop();
