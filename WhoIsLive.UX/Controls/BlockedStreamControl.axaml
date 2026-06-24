@@ -19,8 +19,6 @@
     <Style Selector="Button > ContentPresenter:pointerover">
       <Setter Property="Foreground" Value="Red" />
     </Style>
-
-
   </UserControl.Styles>
 
   <Grid ColumnDefinitions="Auto, *">

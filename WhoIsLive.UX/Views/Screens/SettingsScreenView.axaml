@@ -41,6 +41,9 @@
       <Setter Property="Margin" Value="0, -4, 0, 0" />
       <Setter Property="Padding" Value="9, 8, 9, 9" />
     </Style>
+    <Style Selector="ItemsControl#VIEW_BlockList ItemsPresenter > StackPanel">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
   </UserControl.Styles>
 
   <Grid RowDefinitions="Auto, Auto, Auto, Auto, *">
@@ -80,22 +83,19 @@
 
     <Separator Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="16" />
 
-    <Grid RowDefinitions="Auto, *" ColumnDefinitions="Auto, Auto, *" Grid.Row="3">
+    <Grid RowDefinitions="Auto" ColumnDefinitions="Auto, Auto, *" Grid.Row="3">
 
       <TextBlock Text="{x:Static locals:Resources.SettingsScreenBlockedStreamsLabel}" FontSize="20" FontWeight="DemiBold" 
                  Grid.Row="0" Grid.Column="0" Margin="16, 16, 0, 16" VerticalAlignment="Center" />
 
       <TextBlock Text="{x:Static locals:Resources.SettingsScreenBlockedStreamsToolTip}" FontSize="14" FontWeight="Thin"
                  Grid.Row="0" Grid.Column="1" Margin="4,16,0,16" VerticalAlignment="Center" />
+    
+    </Grid>
 
-      <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Stretch">
 
-        <ItemsControl ItemsSource="{Binding BlockedStreams}" Margin="16, 0" HorizontalAlignment="Stretch">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" />
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
+        <ItemsControl Name="VIEW_BlockList" ItemsSource="{Binding BlockedStreams}" Margin="16, 0" HorizontalAlignment="Stretch">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
               <controls:BlockedStreamControl HorizontalAlignment="Stretch" Margin="8, 0, 8, 4" />
@@ -103,9 +103,7 @@
           </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-      </ScrollViewer>
-
-    </Grid>
+    </ScrollViewer>
 
   </Grid>
 
