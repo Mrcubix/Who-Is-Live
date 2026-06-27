@@ -7,7 +7,8 @@
              xmlns:screens="clr-namespace:WhoIsLive.UX.Views.Screens"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="WhoIsLive.UX.Views.MainView"
-             x:DataType="vm:MainViewModel">
+             x:DataType="vm:MainViewModel"
+             Background="#1F1F23">
 
   <Design.DataContext>
     <vm:MainViewModel />
