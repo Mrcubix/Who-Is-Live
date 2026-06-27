@@ -11,7 +11,7 @@ public partial class MainWindow : Window
 
         if (insetsManager != null && OperatingSystem.IsAndroid())
         {
-            insetsManager.DisplayEdgeToEdge = true;
+            insetsManager.DisplayEdgeToEdgePreference = true;
             insetsManager.IsSystemBarVisible = false;
         }
         
